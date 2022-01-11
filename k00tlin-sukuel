@@ -1,0 +1,62 @@
+ private val DATABASE_NAME = "kisiler.db"
+        private val DATABASE_VERSION = 1
+        private var TABLE_KISILER = "kisiler"
+        private val ROW_ID = "id"
+        private val ROW_AD = "ad"
+        private val ROW_SOYAD = "soyad"
+        private val ROW_TEL = "tel"
+        private val ROW_MAIL = "mail"
+
+    class VeriTabani(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+    override fun onCreate(db: SQLiteDatabase?) {
+        db?.execSQL("CREATE TABLE " + TABLE_KISILER + "("
+                + ROW_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + ROW_AD + " TEXT NOT NULL, "
+                + ROW_SOYAD + " TEXT NOT NULL, "
+                + ROW_TEL + " TEXT NOT NULL, "
+                + ROW_MAIL + " TEXT NOT NULL)"
+        )
+    }
+
+    override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
+        db?.execSQL("DROP TABLE IF EXISTS $TABLE_KISILER")
+    }
+
+    fun veriEkle(ad: String, soyad: String, tel: String, mail: String) {
+        val db = this.writableDatabase
+        try {
+            val cv = ContentValues()
+            cv.put(ROW_AD, ad)
+            cv.put(ROW_SOYAD, soyad)
+            cv.put(ROW_TEL, tel)
+            cv.put(ROW_MAIL, mail)
+            db.insert(TABLE_KISILER, null, cv)
+
+        } catch (e: Exception) {
+
+        } finally {
+            db.close()
+        }
+
+    }
+
+    fun Listele(): List<String> {
+        val veriler = ArrayList<String>()
+        val db = this.readableDatabase
+        try {
+            val sutunlar = arrayOf(ROW_ID, ROW_AD, ROW_SOYAD, ROW_TEL, ROW_MAIL)
+            val cursor = db.query(TABLE_KISILER, sutunlar, null, null, null, null, null, null)
+            while (cursor.moveToNext()) {
+                veriler.add(cursor.getInt(0).toString() + "-"
+                        + cursor.getString(1).toString() + "-"
+                        + cursor.getString(2).toString() + "-"
+                        + cursor.getString(3).toString() + "-"
+                        + cursor.getString(4).toString() + "-")
+            }
+
+        } catch (e: Exception) {
+        } finally {
+            db.close()
+        }
+        return veriler
+    }
