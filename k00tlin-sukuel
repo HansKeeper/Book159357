@@ -1,13 +1,22 @@
- private val DATABASE_NAME = "kisiler.db"
-        private val DATABASE_VERSION = 1
-        private var TABLE_KISILER = "kisiler"
-        private val ROW_ID = "id"
-        private val ROW_AD = "ad"
-        private val ROW_SOYAD = "soyad"
-        private val ROW_TEL = "tel"
-        private val ROW_MAIL = "mail"
+package com.topcubasi.sqlkisi
 
-    class VeriTabani(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+import android.content.ContentValues
+import android.content.Context
+import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteOpenHelper
+
+import java.lang.Exception
+
+private val DATABASE_NAME = "kisiler.db"
+private val DATABASE_VERSION = 1
+private var TABLE_KISILER = "kisiler"
+private val ROW_ID = "id"
+private val ROW_AD = "ad"
+private val ROW_SOYAD = "soyad"
+private val ROW_TEL = "tel"
+private val ROW_MAIL = "mail"
+
+class VeriTabani(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL("CREATE TABLE " + TABLE_KISILER + "("
                 + ROW_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -60,3 +69,44 @@
         }
         return veriler
     }
+    fun veriSil(id: Int) {
+        val db=this.writableDatabase
+        try {
+            val konumlanma="$ROW_ID = $id"
+            db.delete(TABLE_KISILER,konumlanma,null)
+        }catch(e:Exception) {
+
+        }
+        db.close()
+    }
+    fun veriDuzenle(id:Int,ad: String, soyad: String, tel: String, mail: String) {
+        val db = this.writableDatabase
+        try {
+            val cv = ContentValues()
+            cv.put(ROW_AD, ad)
+            cv.put(ROW_SOYAD, soyad)
+            cv.put(ROW_TEL, tel)
+            cv.put(ROW_MAIL, mail)
+            val konumlanma="$ROW_ID = $id"
+            db.update(TABLE_KISILER,  cv,konumlanma,null)
+        } catch (e: Exception) {
+
+        } finally {
+            db.close()
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
