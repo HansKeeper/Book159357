@@ -1,24 +1,13 @@
-package com.topcubasi.sqlkisi
 
-import android.content.ContentValues
-import android.content.Context
-import android.database.sqlite.SQLiteDatabase
-import android.database.sqlite.SQLiteOpenHelper
-
-import java.lang.Exception
-
-private val DATABASE_NAME = "kisiler.db"
+private val DATABASE_NAME = "kk.db"
 private val DATABASE_VERSION = 1
-private var TABLE_KISILER = "kisiler"
+private var TABLE_KISILER = "kk"
 private val ROW_ID = "id"
-private val ROW_AD = "ad"
-private val ROW_SOYAD = "soyad"
-private val ROW_TEL = "tel"
-private val ROW_MAIL = "mail"
+
 
 class VeriTabani(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     override fun onCreate(db: SQLiteDatabase?) {
-        db?.execSQL("CREATE TABLE " + TABLE_KISILER + "("
+        db?.execSQL("CREATE TABLE " + TABLE_kk + "("
                 + ROW_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + ROW_AD + " TEXT NOT NULL, "
                 + ROW_SOYAD + " TEXT NOT NULL, "
@@ -39,7 +28,7 @@ class VeriTabani(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME, n
             cv.put(ROW_SOYAD, soyad)
             cv.put(ROW_TEL, tel)
             cv.put(ROW_MAIL, mail)
-            db.insert(TABLE_KISILER, null, cv)
+            db.insert(TABLE_kk, null, cv)
 
         } catch (e: Exception) {
 
@@ -54,7 +43,7 @@ class VeriTabani(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME, n
         val db = this.readableDatabase
         try {
             val sutunlar = arrayOf(ROW_ID, ROW_AD, ROW_SOYAD, ROW_TEL, ROW_MAIL)
-            val cursor = db.query(TABLE_KISILER, sutunlar, null, null, null, null, null, null)
+            val cursor = db.query(TABLE_kk, sutunlar, null, null, null, null, null, null)
             while (cursor.moveToNext()) {
                 veriler.add(cursor.getInt(0).toString() + "-"
                         + cursor.getString(1).toString() + "-"
